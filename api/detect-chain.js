@@ -22,9 +22,16 @@ const CHAIN_RPCS = {
   9745:    "https://rpc.plasma.io",
 };
 
+function withTimeout(promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), ms)),
+  ]);
+}
+
 async function tryChain(chainId, rpc, txHash) {
   try {
-    const res = await fetch(rpc, {
+    const fetchPromise = fetch(rpc, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -32,11 +39,11 @@ async function tryChain(chainId, rpc, txHash) {
         method: "eth_getTransactionByHash",
         params: [txHash],
       }),
-      signal: AbortSignal.timeout(8000),
     });
-    const data = await res.json();
+    const res = await withTimeout(fetchPromise, 5000);
+    const data = await withTimeout(res.json(), 3000);
     if (data?.result?.hash) {
-      return { chainId: String(chainId), input: data.result.input };
+      return { chainId: String(chainId), input: data.result.input || "0x" };
     }
   } catch {}
   return null;
@@ -50,15 +57,16 @@ export default async function handler(req, res) {
   const { txHash } = req.query;
   if (!txHash) return res.status(400).json({ error: "txHash is required" });
 
+  // Race all chains — first to find the tx wins
+  const promises = Object.entries(CHAIN_RPCS).map(([chainId, rpc]) =>
+    tryChain(chainId, rpc, txHash).then(r => {
+      if (!r) throw new Error("not found");
+      return r;
+    })
+  );
+
   try {
-    const result = await Promise.any(
-      Object.entries(CHAIN_RPCS).map(([chainId, rpc]) =>
-        tryChain(chainId, rpc, txHash).then(r => {
-          if (!r) throw new Error("not found");
-          return r;
-        })
-      )
-    );
+    const result = await Promise.any(promises);
     return res.status(200).json(result);
   } catch {
     return res.status(404).json({ error: "Transaction not found on any supported chain." });
