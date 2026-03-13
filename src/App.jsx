@@ -92,6 +92,8 @@ const TOKENS  = {
 };
 const tokenSym  = (addr) => addr?.toLowerCase() === NATIVE ? "ETH" : TOKENS[addr?.toLowerCase()]?.s || addr?.slice(0,6)+"…"+addr?.slice(-4) || "?";
 const tokenDec  = (addr) => addr?.toLowerCase() === NATIVE ? 18 : TOKENS[addr?.toLowerCase()]?.d || 18;
+const STABLES   = new Set(["USDC","USDT","DAI","BUSD","FRAX","LUSD","crvUSD","PYUSD"]);
+const isStable  = (addr) => STABLES.has(tokenSym(addr));
 const fmtAmt    = (raw, addr) => {
   if (!raw) return "—";
   const n = Number(raw) / 10 ** tokenDec(addr);
@@ -215,8 +217,8 @@ function StepCard({ step, idx, isLast, globalStatus }) {
   const dstChain = getChain(dstId);
   const sellSym  = tokenSym(step.sellToken);
   const buySym   = tokenSym(step.buyToken);
-  const sellAmt  = fmtAmt(step.sellAmount, step.sellToken);
-  const buyAmt   = fmtAmt(step.settledBuyAmount || step.quotedBuyAmount, step.buyToken);
+  const sellAmt  = (isStable(step.sellToken) ? "$" : "") + fmtAmt(step.sellAmount, step.sellToken);
+  const buyAmt   = (isStable(step.buyToken) ? "$" : "") + fmtAmt(step.settledBuyAmount || step.quotedBuyAmount, step.buyToken);
   const ts       = step.transactions?.[0]?.timestamp;
   const accentColor = isSwap ? C.blue : C.green;
 
@@ -320,12 +322,12 @@ function Result({ data }) {
             <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
               <ChainTag chainId={first.transactions?.[0]?.chainId} size="lg" />
               <span style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:16, fontWeight:700, color:C.text }}>
-                {fmtAmt(first.sellAmount, first.sellToken)} <span style={{ color:getChain(first.transactions?.[0]?.chainId)?.color||C.textSub }}>{tokenSym(first.sellToken)}</span>
+                {isStable(first.sellToken) ? "$" : ""}{fmtAmt(first.sellAmount, first.sellToken)} <span style={{ color:getChain(first.transactions?.[0]?.chainId)?.color||C.textSub }}>{tokenSym(first.sellToken)}</span>
               </span>
               <span style={{ color:C.border2, fontSize:18 }}>→</span>
               <ChainTag chainId={last.destinationChainId||last.transactions?.[last.transactions.length-1]?.chainId} size="lg" />
               <span style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:16, fontWeight:700, color:C.text }}>
-                {fmtAmt(last.settledBuyAmount||last.quotedBuyAmount, last.buyToken)} <span style={{ color:getChain(last.destinationChainId)?.color||C.textSub }}>{tokenSym(last.buyToken)}</span>
+                {isStable(last.buyToken) ? "$" : ""}{fmtAmt(last.settledBuyAmount||last.quotedBuyAmount, last.buyToken)} <span style={{ color:getChain(last.destinationChainId)?.color||C.textSub }}>{tokenSym(last.buyToken)}</span>
               </span>
             </div>
           )}
