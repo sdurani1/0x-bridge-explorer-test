@@ -450,6 +450,21 @@ export default function BridgeExplorer() {
     setResult(null); setError(null);
   };
 
+  // Try a single RPC, return { detectedChainId, tx } or null
+  const tryRpc = async (id, chain, txHash) => {
+    if (!chain.rpc) return null;
+    try {
+      const res = await fetch(chain.rpc, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jsonrpc:"2.0", id:1, method:"eth_getTransactionByHash", params:[txHash] }),
+        signal: AbortSignal.timeout(6000),
+      });
+      const data = await res.json();
+      if (data?.result?.hash) return { detectedChainId: String(id), tx: data.result };
+    } catch {}
+    return null;
+  };
+
   const handleSearch = async () => {
     const val = input.trim();
     if (!val || inputKind === "empty" || inputKind === "partial") return;
@@ -460,16 +475,35 @@ export default function BridgeExplorer() {
     startLoadingMessages();
 
     try {
-      const chain = CHAINS[chainId];
-      if (!chain) throw new Error("Select the origin chain first.");
+      // First try the selected chain fast
+      let detectedChainId = chainId;
+      let tx = null;
 
-      // Fetch tx to extract quoteId
-      const rpcRes  = await fetch(chain.rpc, { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ jsonrpc:"2.0", id:1, method:"eth_getTransactionByHash", params:[val] }) });
-      const rpcData = await rpcRes.json();
-      if (!rpcData?.result) throw new Error("Transaction not found on-chain. Make sure you selected the correct origin chain.");
+      const selected = CHAINS[chainId];
+      if (selected?.rpc) {
+        const fast = await tryRpc(chainId, selected, val);
+        if (fast) { detectedChainId = fast.detectedChainId; tx = fast.tx; }
+      }
 
-      const quoteId = extractQuoteId(rpcData.result.input);
-      const params  = new URLSearchParams({ originChain: chainId, originTxHash: val });
+      // If not found on selected chain, race all others in parallel
+      if (!tx) {
+        const others = Object.entries(CHAINS).filter(([id]) => String(id) !== String(chainId) && CHAINS[id]?.rpc);
+        const found = await Promise.any(
+          others.map(([id, chain]) => tryRpc(id, chain, val).then(r => {
+            if (!r) throw new Error("not found");
+            return r;
+          }))
+        ).catch(() => null);
+        if (found) { detectedChainId = found.detectedChainId; tx = found.tx; }
+      }
+
+      if (!tx) throw new Error("Transaction not found on any supported chain. Double-check the hash and try again.");
+
+      // Snap the dropdown to the detected chain
+      setChainId(detectedChainId);
+
+      const quoteId = extractQuoteId(tx.input);
+      const params  = new URLSearchParams({ originChain: detectedChainId, originTxHash: val });
       if (quoteId) params.append("quoteId", quoteId);
 
       const res  = await fetch(`/api/status?${params}`);
@@ -624,7 +658,7 @@ export default function BridgeExplorer() {
             onMouseEnter={e=>e.target.style.color=C.textSub} onMouseLeave={e=>e.target.style.color=C.textDim}
           >try a real transaction</button>
           <span style={{ color:C.border2 }}>·</span>
-          <span style={{ fontSize:11, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace" }}>select origin chain before searching</span>
+          <span style={{ fontSize:11, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace" }}>chain auto-detected from tx hash</span>
         </div>
       </div>
 
