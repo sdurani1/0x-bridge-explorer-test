@@ -53,7 +53,7 @@ let C = THEMES.dark;
 
 // ── Chain registry ─────────────────────────────────────────────────────────────
 const CHAINS = {
-  1:      { name: "Ethereum",    short: "ETH",   color: "#627EEA", explorer: "https://etherscan.io/tx/",            rpc: "https://eth.llamarpc.com" },
+  1:      { name: "Ethereum",    short: "ETH",   color: "#627EEA", explorer: "https://etherscan.io/tx/",            rpc: "https://cloudflare-eth.com" },
   42161:  { name: "Arbitrum",    short: "ARB",   color: "#28A0F0", explorer: "https://arbiscan.io/tx/",             rpc: "https://arb1.arbitrum.io/rpc" },
   8453:   { name: "Base",        short: "BASE",  color: "#3B82F6", explorer: "https://basescan.org/tx/",            rpc: "https://mainnet.base.org" },
   10:     { name: "Optimism",    short: "OP",    color: "#FF4D6A", explorer: "https://optimistic.etherscan.io/tx/", rpc: "https://mainnet.optimism.io" },
