@@ -472,7 +472,7 @@ export default function BridgeExplorer() {
       const params  = new URLSearchParams({ originChain: chainId, originTxHash: val });
       if (quoteId) params.append("quoteId", quoteId);
 
-      const res  = await fetch(`https://0x-cross-chain-status-one.vercel.app/api/status?${params}`);
+      const res  = await fetch(`/api/status?${params}`);
       if (!res.ok) throw new Error("This doesn't appear to be a 0x cross-chain transaction, or the bridge status is not yet available.");
       const data = await res.json();
       if (data.error) throw new Error(data.error);
