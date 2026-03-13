@@ -53,26 +53,26 @@ let C = THEMES.dark;
 
 // ── Chain registry ─────────────────────────────────────────────────────────────
 const CHAINS = {
-  1:      { name: "Ethereum",    short: "ETH",   color: "#627EEA", explorer: "https://etherscan.io/tx/",            logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png" },
-  42161:  { name: "Arbitrum",    short: "ARB",   color: "#28A0F0", explorer: "https://arbiscan.io/tx/",             logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/arbitrum/info/logo.png" },
-  8453:   { name: "Base",        short: "BASE",  color: "#3B82F6", explorer: "https://basescan.org/tx/",            logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/base/info/logo.png" },
-  10:     { name: "Optimism",    short: "OP",    color: "#FF4D6A", explorer: "https://optimistic.etherscan.io/tx/", logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/optimism/info/logo.png" },
-  137:    { name: "Polygon",     short: "POL",   color: "#A855F7", explorer: "https://polygonscan.com/tx/",         logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/info/logo.png" },
-  43114:  { name: "Avalanche",   short: "AVAX",  color: "#EF4444", explorer: "https://snowtrace.io/tx/",            logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avalanchec/info/logo.png" },
-  56:     { name: "BNB Chain",   short: "BNB",   color: "#EAB308", explorer: "https://bscscan.com/tx/",             logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/info/logo.png" },
-  81457:  { name: "Blast",       short: "BLAST", color: "#D4D400", explorer: "https://blastscan.io/tx/",            logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/blast/info/logo.png" },
-  534352: { name: "Scroll",      short: "SCR",   color: "#E8AA6A", explorer: "https://scrollscan.com/tx/",          logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/scroll/info/logo.png" },
-  59144:  { name: "Linea",       short: "LNA",   color: "#61DFFF", explorer: "https://lineascan.build/tx/",         logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/linea/info/logo.png" },
-  5000:   { name: "Mantle",      short: "MNT",   color: "#00C3A0", explorer: "https://explorer.mantle.xyz/tx/",    logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/mantle/info/logo.png" },
-  34443:  { name: "Mode",        short: "MODE",  color: "#CCFF00", explorer: "https://modescan.io/tx/",             logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/mode/info/logo.png" },
-  146:    { name: "Sonic",       short: "S",     color: "#FF6B35", explorer: "https://sonicscan.org/tx/",           logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/sonic/info/logo.png" },
-  130:    { name: "Unichain",    short: "UNI",   color: "#FC72FF", explorer: "https://uniscan.xyz/tx/",             logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/unichain/info/logo.png" },
-  480:    { name: "World Chain", short: "WLD",   color: "#60A5FA", explorer: "https://worldscan.org/tx/",           logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/worldchain/info/logo.png" },
-  2741:   { name: "Abstract",    short: "ABS",   color: "#C084FC", explorer: "https://abscan.org/tx/",              logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/abstract/info/logo.png" },
-  80094:  { name: "Berachain",   short: "BERA",  color: "#FB923C", explorer: "https://berascan.com/tx/",            logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/berachain/info/logo.png" },
-  999:    { name: "HyperEVM",    short: "HYPE",  color: "#34D399", explorer: "https://hyperevmscan.io/tx/",         logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/hyperliquid/info/logo.png" },
-  57073:  { name: "Ink",         short: "INK",   color: "#F472B6", explorer: "https://inkscan.xyz/tx/",             logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ink/info/logo.png" },
-  143:    { name: "Monad",       short: "MON",   color: "#818CF8", explorer: "https://monadexplorer.com/tx/",       logo: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/monad/info/logo.png" },
+  1:      { name: "Ethereum",    short: "ETH",   color: "#627EEA", explorer: "https://etherscan.io/tx/",            logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/ethereum.svg" },
+  42161:  { name: "Arbitrum",    short: "ARB",   color: "#28A0F0", explorer: "https://arbiscan.io/tx/",             logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/arbitrum-one.svg" },
+  8453:   { name: "Base",        short: "BASE",  color: "#3B82F6", explorer: "https://basescan.org/tx/",            logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/base.svg" },
+  10:     { name: "Optimism",    short: "OP",    color: "#FF4D6A", explorer: "https://optimistic.etherscan.io/tx/", logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/op-mainnet.svg" },
+  137:    { name: "Polygon",     short: "POL",   color: "#A855F7", explorer: "https://polygonscan.com/tx/",         logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/polygon.svg" },
+  43114:  { name: "Avalanche",   short: "AVAX",  color: "#EF4444", explorer: "https://snowtrace.io/tx/",            logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/avalanche.svg" },
+  56:     { name: "BNB Chain",   short: "BNB",   color: "#EAB308", explorer: "https://bscscan.com/tx/",             logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/bnb-smart-chain.svg" },
+  81457:  { name: "Blast",       short: "BLAST", color: "#D4D400", explorer: "https://blastscan.io/tx/",            logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/blast.svg" },
+  534352: { name: "Scroll",      short: "SCR",   color: "#E8AA6A", explorer: "https://scrollscan.com/tx/",          logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/scroll.svg" },
+  59144:  { name: "Linea",       short: "LNA",   color: "#61DFFF", explorer: "https://lineascan.build/tx/",         logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/linea-mainnet.svg" },
+  5000:   { name: "Mantle",      short: "MNT",   color: "#00C3A0", explorer: "https://explorer.mantle.xyz/tx/",    logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/mantle.svg" },
+  34443:  { name: "Mode",        short: "MODE",  color: "#CCFF00", explorer: "https://modescan.io/tx/",             logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/mode.svg" },
+  146:    { name: "Sonic",       short: "S",     color: "#FF6B35", explorer: "https://sonicscan.org/tx/",           logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/sonic.svg" },
+  130:    { name: "Unichain",    short: "UNI",   color: "#FC72FF", explorer: "https://uniscan.xyz/tx/",             logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/unichain.svg" },
+  480:    { name: "World Chain", short: "WLD",   color: "#60A5FA", explorer: "https://worldscan.org/tx/",           logo: null },
+  2741:   { name: "Abstract",    short: "ABS",   color: "#C084FC", explorer: "https://abscan.org/tx/",              logo: null },
+  80094:  { name: "Berachain",   short: "BERA",  color: "#FB923C", explorer: "https://berascan.com/tx/",            logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/berachain.svg" },
+  999:    { name: "HyperEVM",    short: "HYPE",  color: "#34D399", explorer: "https://hyperevmscan.io/tx/",         logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/hyperevm.svg" },
+  57073:  { name: "Ink",         short: "INK",   color: "#F472B6", explorer: "https://inkscan.xyz/tx/",             logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/ink.svg" },
+  143:    { name: "Monad",       short: "MON",   color: "#818CF8", explorer: "https://monadexplorer.com/tx/",       logo: "https://raw.githubusercontent.com/0xProject/0x-cross-chain-status/3895fdf2e9969ea3d3464851c90fdf257e0c91ad/app/chains/monad.svg" },
   9745:   { name: "Plasma",      short: "PLS",   color: "#6EE7B7", explorer: "https://plasma.explorer/tx/",         logo: null },
   // SVM
   999999999991: { name: "Solana", short: "SOL", color: "#9945FF", explorer: "https://solscan.io/tx/", rpc: null, svm: true },
@@ -163,11 +163,15 @@ function ScanBar() {
 function ChainTag({ chainId, size = "sm" }) {
   const c = getChain(chainId);
   if (!c) return <span style={{ fontSize: 11, color: C.textDim, fontFamily: "monospace" }}>chain:{chainId}</span>;
-  const fs  = size === "lg" ? 13 : 11;
-  const pad = size === "lg" ? "5px 12px" : "3px 9px";
+  const fs      = size === "lg" ? 13 : 11;
+  const pad     = size === "lg" ? "4px 10px 4px 6px" : "2px 8px 2px 5px";
+  const imgSize = size === "lg" ? 16 : 13;
   return (
     <span style={{ display:"inline-flex", alignItems:"center", gap:5, background: c.color+"18", border:`1px solid ${c.color}35`, borderRadius:6, padding:pad, fontFamily:"'IBM Plex Mono', monospace", fontSize:fs, fontWeight:600, color:c.color, whiteSpace:"nowrap" }}>
-      <span style={{ width:6, height:6, borderRadius:"50%", background:c.color, flexShrink:0 }} />
+      {c.logo
+        ? <img src={c.logo} onError={e => { e.target.style.display="none"; e.target.nextSibling.style.display="inline-block"; }} style={{ width:imgSize, height:imgSize, borderRadius:"50%", objectFit:"cover", flexShrink:0 }} />
+        : null}
+      <span style={{ width:6, height:6, borderRadius:"50%", background:c.color, flexShrink:0, display: c.logo ? "none" : "inline-block" }} />
       {c.short}
     </span>
   );
@@ -327,12 +331,7 @@ function Result({ data }) {
           )}
         </div>
         <div style={{ display:"flex", flexDirection:"column", gap:8, alignItems:"flex-end" }}>
-          {data.zid && (
-            <div style={{ textAlign:"right" }}>
-              <div style={{ fontSize:9, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", letterSpacing:"0.1em", marginBottom:4 }}>ZID</div>
-              <div style={{ fontSize:11, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace" }}>{trunc(data.zid,10,8)}</div>
-            </div>
-          )}
+{/* ZID hidden */}
         </div>
       </div>
 
