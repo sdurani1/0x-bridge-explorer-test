@@ -52,28 +52,29 @@ const THEMES = {
 let C = THEMES.dark;
 
 // ── Chain registry ─────────────────────────────────────────────────────────────
+const TW = "https://cdn.jsdelivr.net/gh/trustwallet/assets/blockchains";
 const CHAINS = {
-  1:      { name: "Ethereum",    short: "ETH",   color: "#627EEA", explorer: "https://etherscan.io/tx/" },
-  42161:  { name: "Arbitrum",    short: "ARB",   color: "#28A0F0", explorer: "https://arbiscan.io/tx/" },
-  8453:   { name: "Base",        short: "BASE",  color: "#3B82F6", explorer: "https://basescan.org/tx/" },
-  10:     { name: "Optimism",    short: "OP",    color: "#FF4D6A", explorer: "https://optimistic.etherscan.io/tx/" },
-  137:    { name: "Polygon",     short: "POL",   color: "#A855F7", explorer: "https://polygonscan.com/tx/" },
-  43114:  { name: "Avalanche",   short: "AVAX",  color: "#EF4444", explorer: "https://snowtrace.io/tx/" },
-  56:     { name: "BNB Chain",   short: "BNB",   color: "#EAB308", explorer: "https://bscscan.com/tx/" },
-  81457:  { name: "Blast",       short: "BLAST", color: "#D4D400", explorer: "https://blastscan.io/tx/" },
-  534352: { name: "Scroll",      short: "SCR",   color: "#E8AA6A", explorer: "https://scrollscan.com/tx/" },
-  59144:  { name: "Linea",       short: "LNA",   color: "#61DFFF", explorer: "https://lineascan.build/tx/" },
-  5000:   { name: "Mantle",      short: "MNT",   color: "#00C3A0", explorer: "https://explorer.mantle.xyz/tx/" },
-  34443:  { name: "Mode",        short: "MODE",  color: "#CCFF00", explorer: "https://modescan.io/tx/" },
-  146:    { name: "Sonic",       short: "S",     color: "#FF6B35", explorer: "https://sonicscan.org/tx/" },
-  130:    { name: "Unichain",    short: "UNI",   color: "#FC72FF", explorer: "https://uniscan.xyz/tx/" },
-  480:    { name: "World Chain", short: "WLD",   color: "#60A5FA", explorer: "https://worldscan.org/tx/" },
-  2741:   { name: "Abstract",    short: "ABS",   color: "#C084FC", explorer: "https://abscan.org/tx/" },
-  80094:  { name: "Berachain",   short: "BERA",  color: "#FB923C", explorer: "https://berascan.com/tx/" },
-  999:    { name: "HyperEVM",    short: "HYPE",  color: "#34D399", explorer: "https://hyperevmscan.io/tx/" },
-  57073:  { name: "Ink",         short: "INK",   color: "#F472B6", explorer: "https://inkscan.xyz/tx/" },
-  143:    { name: "Monad",       short: "MON",   color: "#818CF8", explorer: "https://monadexplorer.com/tx/" },
-  9745:   { name: "Plasma",      short: "PLS",   color: "#6EE7B7", explorer: "https://plasma.explorer/tx/" },
+  1:      { name: "Ethereum",    short: "ETH",   color: "#627EEA", explorer: "https://etherscan.io/tx/",            logo: `${TW}/ethereum/info/logo.png` },
+  42161:  { name: "Arbitrum",    short: "ARB",   color: "#28A0F0", explorer: "https://arbiscan.io/tx/",             logo: `${TW}/arbitrum/info/logo.png` },
+  8453:   { name: "Base",        short: "BASE",  color: "#3B82F6", explorer: "https://basescan.org/tx/",            logo: `${TW}/base/info/logo.png` },
+  10:     { name: "Optimism",    short: "OP",    color: "#FF4D6A", explorer: "https://optimistic.etherscan.io/tx/", logo: `${TW}/optimism/info/logo.png` },
+  137:    { name: "Polygon",     short: "POL",   color: "#A855F7", explorer: "https://polygonscan.com/tx/",         logo: `${TW}/polygon/info/logo.png` },
+  43114:  { name: "Avalanche",   short: "AVAX",  color: "#EF4444", explorer: "https://snowtrace.io/tx/",            logo: `${TW}/avalanchec/info/logo.png` },
+  56:     { name: "BNB Chain",   short: "BNB",   color: "#EAB308", explorer: "https://bscscan.com/tx/",             logo: `${TW}/smartchain/info/logo.png` },
+  81457:  { name: "Blast",       short: "BLAST", color: "#D4D400", explorer: "https://blastscan.io/tx/",            logo: `${TW}/blast/info/logo.png` },
+  534352: { name: "Scroll",      short: "SCR",   color: "#E8AA6A", explorer: "https://scrollscan.com/tx/",          logo: `${TW}/scroll/info/logo.png` },
+  59144:  { name: "Linea",       short: "LNA",   color: "#61DFFF", explorer: "https://lineascan.build/tx/",         logo: `${TW}/linea/info/logo.png` },
+  5000:   { name: "Mantle",      short: "MNT",   color: "#00C3A0", explorer: "https://explorer.mantle.xyz/tx/",    logo: `${TW}/mantle/info/logo.png` },
+  34443:  { name: "Mode",        short: "MODE",  color: "#CCFF00", explorer: "https://modescan.io/tx/",             logo: null },
+  146:    { name: "Sonic",       short: "S",     color: "#FF6B35", explorer: "https://sonicscan.org/tx/",           logo: `${TW}/sonic/info/logo.png` },
+  130:    { name: "Unichain",    short: "UNI",   color: "#FC72FF", explorer: "https://uniscan.xyz/tx/",             logo: null },
+  480:    { name: "World Chain", short: "WLD",   color: "#60A5FA", explorer: "https://worldscan.org/tx/",           logo: null },
+  2741:   { name: "Abstract",    short: "ABS",   color: "#C084FC", explorer: "https://abscan.org/tx/",              logo: null },
+  80094:  { name: "Berachain",   short: "BERA",  color: "#FB923C", explorer: "https://berascan.com/tx/",            logo: `${TW}/berachain/info/logo.png` },
+  999:    { name: "HyperEVM",    short: "HYPE",  color: "#34D399", explorer: "https://hyperevmscan.io/tx/",         logo: null },
+  57073:  { name: "Ink",         short: "INK",   color: "#F472B6", explorer: "https://inkscan.xyz/tx/",             logo: null },
+  143:    { name: "Monad",       short: "MON",   color: "#818CF8", explorer: "https://monadexplorer.com/tx/",       logo: null },
+  9745:   { name: "Plasma",      short: "PLS",   color: "#6EE7B7", explorer: "https://plasma.explorer/tx/",         logo: null },
   // SVM
   999999999991: { name: "Solana", short: "SOL", color: "#9945FF", explorer: "https://solscan.io/tx/", rpc: null, svm: true },
 };
@@ -414,7 +415,16 @@ export default function BridgeExplorer() {
   const [result,   setResult]  = useState(null);
   const [error,    setError]   = useState(null);
   const [focused,  setFocused] = useState(false);
+  const [showChainMenu, setShowChainMenu] = useState(false);
   const msgInterval = useRef(null);
+
+  // Close chain menu on outside click
+  useEffect(() => {
+    if (!showChainMenu) return;
+    const handler = () => setShowChainMenu(false);
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, [showChainMenu]);
 
   // Sync system preference
   useEffect(() => {
@@ -550,15 +560,33 @@ export default function BridgeExplorer() {
         }}>
           <div style={{ display:"flex", gap:0 }}>
             {/* Chain select */}
-            <div style={{ position:"relative", borderRight:`1px solid ${C.border}` }}>
-              <select
-                value={chainId}
-                onChange={e => setChainId(e.target.value)}
-                style={{ background:C.selectBg, border:"none", color:C.text, padding:"14px 36px 14px 16px", fontSize:13, fontFamily:"'IBM Plex Mono', monospace", fontWeight:600, outline:"none", cursor:"pointer", minWidth:130, appearance:"none" }}
-              >
-                {CHAIN_LIST.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-              </select>
+            <div style={{ position:"relative", borderRight:`1px solid ${C.border}`, flexShrink:0 }}>
+              {/* Selected chain trigger */}
+              <div onClick={() => setShowChainMenu(v => !v)}
+                style={{ display:"flex", alignItems:"center", gap:8, padding:"14px 36px 14px 14px", cursor:"pointer", minWidth:160, background:C.selectBg, userSelect:"none" }}>
+                {CHAINS[chainId]?.logo && <img src={CHAINS[chainId].logo} onError={e => e.target.style.display="none"} style={{ width:18, height:18, borderRadius:"50%", objectFit:"cover", flexShrink:0 }} />}
+                {!CHAINS[chainId]?.logo && <span style={{ width:18, height:18, borderRadius:"50%", background:CHAINS[chainId]?.color+"33", border:`1px solid ${CHAINS[chainId]?.color}55`, flexShrink:0, display:"inline-block" }} />}
+                <span style={{ fontSize:13, fontFamily:"'IBM Plex Mono', monospace", fontWeight:600, color:C.text, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", maxWidth:100 }}>{CHAINS[chainId]?.name}</span>
+              </div>
               <span style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", color:C.textDim, fontSize:9, pointerEvents:"none" }}>▼</span>
+              {/* Dropdown menu */}
+              {showChainMenu && (
+                <div style={{ position:"absolute", top:"calc(100% + 4px)", left:0, zIndex:100, background:C.surface, border:`1px solid ${C.border2}`, borderRadius:10, overflow:"auto", maxHeight:280, minWidth:200, boxShadow:`0 8px 24px #00000040` }}>
+                  {CHAIN_LIST.map(c => (
+                    <div key={c.id} onClick={() => { setChainId(String(c.id)); setShowChainMenu(false); }}
+                      style={{ display:"flex", alignItems:"center", gap:10, padding:"9px 14px", cursor:"pointer", background: String(c.id)===String(chainId) ? C.surface2 : "transparent", transition:"background 0.1s" }}
+                      onMouseEnter={e => e.currentTarget.style.background=C.surface2}
+                      onMouseLeave={e => e.currentTarget.style.background=String(c.id)===String(chainId) ? C.surface2 : "transparent"}
+                    >
+                      {c.logo
+                        ? <img src={c.logo} onError={e => { e.target.style.display="none"; e.target.nextSibling.style.display="inline-block"; }} style={{ width:20, height:20, borderRadius:"50%", objectFit:"cover", flexShrink:0 }} />
+                        : null}
+                      <span style={{ display:"none", width:20, height:20, borderRadius:"50%", background:c.color+"33", border:`1px solid ${c.color}55`, flexShrink:0 }} />
+                      <span style={{ fontSize:13, fontFamily:"'IBM Plex Mono', monospace", color:C.text }}>{c.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Input */}
