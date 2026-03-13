@@ -415,7 +415,6 @@ export default function BridgeExplorer() {
   const [result,   setResult]  = useState(null);
   const [error,    setError]   = useState(null);
   const [focused,  setFocused] = useState(false);
-  const [showChainMenu, setShowChainMenu] = useState(false);
   const msgInterval = useRef(null);
 
   // Sync system preference
@@ -551,34 +550,23 @@ export default function BridgeExplorer() {
           animation: "glow 3s ease-in-out infinite",
         }}>
           <div style={{ display:"flex", gap:0 }}>
-            {/* Chain select */}
-            <div style={{ position:"relative", borderRight:`1px solid ${C.border}`, flexShrink:0 }} tabIndex={0} onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setShowChainMenu(false); }}>
-              {/* Selected chain trigger */}
-              <div onClick={() => setShowChainMenu(v => !v)}
-                style={{ display:"flex", alignItems:"center", gap:8, padding:"14px 36px 14px 14px", cursor:"pointer", minWidth:160, background:C.selectBg, userSelect:"none" }}>
-                {CHAINS[chainId]?.logo && <img src={CHAINS[chainId].logo} onError={e => e.target.style.display="none"} style={{ width:18, height:18, borderRadius:"50%", objectFit:"cover", flexShrink:0 }} />}
-                {!CHAINS[chainId]?.logo && <span style={{ width:18, height:18, borderRadius:"50%", background:CHAINS[chainId]?.color+"33", border:`1px solid ${CHAINS[chainId]?.color}55`, flexShrink:0, display:"inline-block" }} />}
-                <span style={{ fontSize:13, fontFamily:"'IBM Plex Mono', monospace", fontWeight:600, color:C.text, whiteSpace:"nowrap", overflow:"hidden", textOverflow:"ellipsis", maxWidth:100 }}>{CHAINS[chainId]?.name}</span>
-              </div>
+            {/* Chain select — native select with logo overlay */}
+            <div style={{ position:"relative", borderRight:`1px solid ${C.border}`, flexShrink:0, display:"flex", alignItems:"center" }}>
+              {/* Logo overlay — purely decorative, pointer-events off */}
+              <span style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", pointerEvents:"none", zIndex:1, display:"flex", alignItems:"center" }}>
+                {CHAINS[chainId]?.logo
+                  ? <img src={CHAINS[chainId].logo} onError={e => e.target.style.display="none"} style={{ width:18, height:18, borderRadius:"50%", objectFit:"cover" }} />
+                  : <span style={{ width:18, height:18, borderRadius:"50%", background:CHAINS[chainId]?.color+"33", border:`1px solid ${CHAINS[chainId]?.color}55`, display:"inline-block" }} />
+                }
+              </span>
+              <select
+                value={chainId}
+                onChange={e => setChainId(e.target.value)}
+                style={{ background:C.selectBg, border:"none", color:C.text, padding:"14px 36px 14px 40px", fontSize:13, fontFamily:"'IBM Plex Mono', monospace", fontWeight:600, outline:"none", cursor:"pointer", minWidth:180, appearance:"none", position:"relative", zIndex:0 }}
+              >
+                {CHAIN_LIST.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+              </select>
               <span style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", color:C.textDim, fontSize:9, pointerEvents:"none" }}>▼</span>
-              {/* Dropdown menu */}
-              {showChainMenu && (
-                <div style={{ position:"absolute", top:"calc(100% + 4px)", left:0, zIndex:100, background:C.surface, border:`1px solid ${C.border2}`, borderRadius:10, overflow:"auto", maxHeight:280, minWidth:200, boxShadow:`0 8px 24px #00000040` }}>
-                  {CHAIN_LIST.map(c => (
-                    <div key={c.id} onClick={() => { setChainId(String(c.id)); setShowChainMenu(false); }}
-                      style={{ display:"flex", alignItems:"center", gap:10, padding:"9px 14px", cursor:"pointer", background: String(c.id)===String(chainId) ? C.surface2 : "transparent", transition:"background 0.1s" }}
-                      onMouseEnter={e => e.currentTarget.style.background=C.surface2}
-                      onMouseLeave={e => e.currentTarget.style.background=String(c.id)===String(chainId) ? C.surface2 : "transparent"}
-                    >
-                      {c.logo
-                        ? <img src={c.logo} onError={e => { e.target.style.display="none"; e.target.nextSibling.style.display="inline-block"; }} style={{ width:20, height:20, borderRadius:"50%", objectFit:"cover", flexShrink:0 }} />
-                        : null}
-                      <span style={{ display:"none", width:20, height:20, borderRadius:"50%", background:c.color+"33", border:`1px solid ${c.color}55`, flexShrink:0 }} />
-                      <span style={{ fontSize:13, fontFamily:"'IBM Plex Mono', monospace", color:C.text }}>{c.name}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
             </div>
 
             {/* Input */}
