@@ -77,7 +77,7 @@ const CHAINS = {
   // SVM
   999999999991: { name: "Solana", short: "SOL", color: "#9945FF", explorer: "https://solscan.io/tx/", rpc: null, svm: true },
 };
-const CHAIN_LIST = Object.entries(CHAINS).map(([id, c]) => ({ id: Number(id), ...c }));
+const CHAIN_LIST = Object.entries(CHAINS).map(([id, c]) => ({ id: Number(id), ...c })).sort((a, b) => a.name.localeCompare(b.name));
 const getChain   = (id) => CHAINS[String(id)] || null;
 
 // ── Token helpers ──────────────────────────────────────────────────────────────
@@ -556,7 +556,7 @@ export default function BridgeExplorer() {
                 onChange={e => setChainId(e.target.value)}
                 style={{ background:C.selectBg, border:"none", color:C.text, padding:"14px 36px 14px 16px", fontSize:13, fontFamily:"'IBM Plex Mono', monospace", fontWeight:600, outline:"none", cursor:"pointer", minWidth:130, appearance:"none" }}
               >
-                {CHAIN_LIST.map(c => <option key={c.id} value={c.id}>{c.short}</option>)}
+                {CHAIN_LIST.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
               </select>
               <span style={{ position:"absolute", right:10, top:"50%", transform:"translateY(-50%)", color:C.textDim, fontSize:9, pointerEvents:"none" }}>▼</span>
             </div>
