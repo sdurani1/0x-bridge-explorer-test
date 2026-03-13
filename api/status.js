@@ -16,7 +16,7 @@ const CHAIN_RPCS = {
   480:     "https://worldchain-mainnet.g.alchemy.com/public",
   80094:   "https://berachain-rpc.publicnode.com",
   999:     "https://rpc.hyperliquid.xyz/evm",
-  143:     "https://monad-mainnet.g.alchemy.com/v2/demo",
+  143:     "https://monad-mainnet.drpc.org",
   57073:   "https://rpc-gel.inkonchain.com",
   2741:    "https://api.mainnet.abs.xyz",
   9745:    "https://rpc.plasma.io",
@@ -64,31 +64,19 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "originChain and originTxHash are required" });
   }
 
-  const apiKey = process.env.ZERO_EX_API_KEY;
-  if (!apiKey) {
-    return res.status(500).json({ error: "API key not configured" });
-  }
-
   // Extract quoteId from calldata if not provided
   const quoteId = providedQuoteId || await fetchQuoteId(originChain, originTxHash);
 
-  if (!quoteId) {
-    return res.status(400).json({ error: "Could not extract quoteId from transaction calldata. Please provide it manually." });
-  }
+  const params = new URLSearchParams({ originChain, originTxHash });
+  if (quoteId) params.append("quoteId", quoteId);
 
   try {
-    const url = new URL("https://api.0x.org/cross-chain/status");
-    url.searchParams.append("originChain", originChain);
-    url.searchParams.append("originTxHash", originTxHash);
-    url.searchParams.append("quoteId", quoteId);
-
-    const upstream = await fetch(url.toString(), {
-      headers: { "0x-api-key": apiKey },
-    });
-
+    const upstream = await fetch(
+      `https://0x-cross-chain-status-one.vercel.app/api/status?${params}`
+    );
     const data = await upstream.json();
     return res.status(upstream.status).json(data);
   } catch (err) {
-    return res.status(500).json({ error: "Failed to reach 0x API" });
+    return res.status(500).json({ error: "Failed to reach status API" });
   }
 }
