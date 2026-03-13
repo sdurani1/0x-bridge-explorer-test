@@ -460,23 +460,14 @@ export default function BridgeExplorer() {
     startLoadingMessages();
 
     try {
-      // Detect chain server-side (avoids browser CORS issues)
-      const detectRes = await fetch(`/api/detect-chain?txHash=${val}`);
-      if (!detectRes.ok) throw new Error("Transaction not found on any supported chain. Double-check the hash and try again.");
-      const { chainId: detectedChainId, input } = await detectRes.json();
+      // Detect chain + fetch status in one server-side call
+      const detectRes = await fetch(`/api/detect-chain?txHash=${encodeURIComponent(val)}`);
+      if (!detectRes.ok) throw new Error("Transaction not found. This may not be a 0x cross-chain transaction, or the hash may be incorrect.");
+      const { chainId: detectedChainId, statusData } = await detectRes.json();
 
       // Snap dropdown to detected chain
       setChainId(detectedChainId);
-
-      const quoteId = extractQuoteId(input);
-      const params  = new URLSearchParams({ originChain: detectedChainId, originTxHash: val });
-      if (quoteId) params.append("quoteId", quoteId);
-
-      const res  = await fetch(`/api/status?${params}`);
-      if (!res.ok) throw new Error("This doesn't appear to be a 0x cross-chain transaction, or the bridge status is not yet available.");
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      setResult(data);
+      setResult(statusData);
     } catch (e) {
       setError(e.message || "Something went wrong — please try again.");
     } finally {
