@@ -460,14 +460,13 @@ export default function BridgeExplorer() {
     startLoadingMessages();
 
     try {
-      // Detect chain + fetch status in one server-side call
-      const detectRes = await fetch(`/api/detect-chain?txHash=${encodeURIComponent(val)}`);
-      if (!detectRes.ok) throw new Error("Transaction not found. This may not be a 0x cross-chain transaction, or the hash may be incorrect.");
-      const { chainId: detectedChainId, statusData } = await detectRes.json();
-
-      // Snap dropdown to detected chain
-      setChainId(detectedChainId);
-      setResult(statusData);
+      // Call status API with user-selected chain
+      const params = new URLSearchParams({ originChain: chainId, originTxHash: val });
+      const res = await fetch(`/api/status?${params}`);
+      if (!res.ok) throw new Error("Transaction not found. Make sure you selected the correct origin chain.");
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setResult(data);
     } catch (e) {
       setError(e.message || "Something went wrong — please try again.");
     } finally {
@@ -615,7 +614,7 @@ export default function BridgeExplorer() {
             onMouseEnter={e=>e.target.style.color=C.textSub} onMouseLeave={e=>e.target.style.color=C.textDim}
           >try a real transaction</button>
           <span style={{ color:C.border2 }}>·</span>
-          <span style={{ fontSize:11, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace" }}>chain auto-detected from tx hash</span>
+          <span style={{ fontSize:11, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace" }}>select the origin chain before searching</span>
         </div>
       </div>
 
