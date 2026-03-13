@@ -450,21 +450,6 @@ export default function BridgeExplorer() {
     setResult(null); setError(null);
   };
 
-  // Try a single RPC, return { detectedChainId, tx } or null
-  const tryRpc = async (id, chain, txHash) => {
-    if (!chain.rpc) return null;
-    try {
-      const res = await fetch(chain.rpc, {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jsonrpc:"2.0", id:1, method:"eth_getTransactionByHash", params:[txHash] }),
-        signal: AbortSignal.timeout(6000),
-      });
-      const data = await res.json();
-      if (data?.result?.hash) return { detectedChainId: String(id), tx: data.result };
-    } catch {}
-    return null;
-  };
-
   const handleSearch = async () => {
     const val = input.trim();
     if (!val || inputKind === "empty" || inputKind === "partial") return;
@@ -475,34 +460,15 @@ export default function BridgeExplorer() {
     startLoadingMessages();
 
     try {
-      // First try the selected chain fast
-      let detectedChainId = chainId;
-      let tx = null;
+      // Detect chain server-side (avoids browser CORS issues)
+      const detectRes = await fetch(`/api/detect-chain?txHash=${val}`);
+      if (!detectRes.ok) throw new Error("Transaction not found on any supported chain. Double-check the hash and try again.");
+      const { chainId: detectedChainId, input } = await detectRes.json();
 
-      const selected = CHAINS[chainId];
-      if (selected?.rpc) {
-        const fast = await tryRpc(chainId, selected, val);
-        if (fast) { detectedChainId = fast.detectedChainId; tx = fast.tx; }
-      }
-
-      // If not found on selected chain, race all others in parallel
-      if (!tx) {
-        const others = Object.entries(CHAINS).filter(([id]) => String(id) !== String(chainId) && CHAINS[id]?.rpc);
-        const found = await Promise.any(
-          others.map(([id, chain]) => tryRpc(id, chain, val).then(r => {
-            if (!r) throw new Error("not found");
-            return r;
-          }))
-        ).catch(() => null);
-        if (found) { detectedChainId = found.detectedChainId; tx = found.tx; }
-      }
-
-      if (!tx) throw new Error("Transaction not found on any supported chain. Double-check the hash and try again.");
-
-      // Snap the dropdown to the detected chain
+      // Snap dropdown to detected chain
       setChainId(detectedChainId);
 
-      const quoteId = extractQuoteId(tx.input);
+      const quoteId = extractQuoteId(input);
       const params  = new URLSearchParams({ originChain: detectedChainId, originTxHash: val });
       if (quoteId) params.append("quoteId", quoteId);
 
