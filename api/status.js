@@ -1,5 +1,5 @@
 const CHAIN_RPCS = {
-  1:       "https://cloudflare-eth.com",
+  1:       "https://eth.llamarpc.com",
   42161:   "https://arb1.arbitrum.io/rpc",
   8453:    "https://mainnet.base.org",
   10:      "https://mainnet.optimism.io",
