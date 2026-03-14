@@ -161,6 +161,32 @@ function ScanBar() {
   );
 }
 
+// ── Token link ────────────────────────────────────────────────────────────────
+function TokenLink({ addr, chainId, color }) {
+  const sym   = tokenSym(addr);
+  const chain = getChain(chainId);
+  const NATIVE = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+  const isNative = addr?.toLowerCase() === NATIVE;
+  // Build token explorer URL — most explorers use /token/{addr}
+  const base = chain?.explorer?.replace("/tx/", "") || "";
+  const url  = (!isNative && addr && base) ? `${base}/token/${addr}` : null;
+
+  const style = {
+    color: color || chain?.color || C.textSub,
+    fontFamily: "'IBM Plex Mono', monospace",
+    textDecoration: url ? "underline" : "none",
+    textDecorationColor: (color || chain?.color || C.textSub) + "60",
+    textUnderlineOffset: "3px",
+    cursor: url ? "pointer" : "default",
+  };
+
+  if (!url) return <span style={style}>{sym}</span>;
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer" style={style}
+       onClick={e => e.stopPropagation()}>{sym} <span style={{ fontSize:"0.75em", opacity:0.6 }}>↗</span></a>
+  );
+}
+
 // ── Chain tag ──────────────────────────────────────────────────────────────────
 function ChainTag({ chainId, size = "sm" }) {
   const c = getChain(chainId);
@@ -251,7 +277,7 @@ function StepCard({ step, idx, isLast, globalStatus }) {
             <span style={{ fontSize:10, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", letterSpacing:"0.08em" }}>SEND</span>
             <div style={{ display:"flex", alignItems:"center", gap:7 }}>
               <ChainTag chainId={srcId} />
-              <span style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:15, fontWeight:700, color:C.text }}>{sellAmt} <span style={{ color: srcChain?.color || C.textSub }}>{sellSym}</span></span>
+              <span style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:15, fontWeight:700, color:C.text }}>{sellAmt} <TokenLink addr={step.sellToken} chainId={srcId} /></span>
             </div>
           </div>
 
@@ -263,7 +289,7 @@ function StepCard({ step, idx, isLast, globalStatus }) {
             <span style={{ fontSize:10, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", letterSpacing:"0.08em" }}>RECEIVE</span>
             <div style={{ display:"flex", alignItems:"center", gap:7 }}>
               {dstId && dstId !== srcId && <ChainTag chainId={dstId} />}
-              <span style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:15, fontWeight:700, color:C.text }}>{buyAmt} <span style={{ color: dstChain?.color || C.textSub }}>{buySym}</span></span>
+              <span style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:15, fontWeight:700, color:C.text }}>{buyAmt} <TokenLink addr={step.buyToken} chainId={dstId || srcId} /></span>
             </div>
           </div>
         </div>
@@ -322,12 +348,12 @@ function Result({ data }) {
             <div style={{ display:"flex", alignItems:"center", gap:8, flexWrap:"wrap" }}>
               <ChainTag chainId={first.transactions?.[0]?.chainId} size="lg" />
               <span style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:16, fontWeight:700, color:C.text }}>
-                {isStable(first.sellToken) ? "$" : ""}{fmtAmt(first.sellAmount, first.sellToken)} <span style={{ color:getChain(first.transactions?.[0]?.chainId)?.color||C.textSub }}>{tokenSym(first.sellToken)}</span>
+                {isStable(first.sellToken) ? "$" : ""}{fmtAmt(first.sellAmount, first.sellToken)} <TokenLink addr={first.sellToken} chainId={first.transactions?.[0]?.chainId} />
               </span>
               <span style={{ color:C.border2, fontSize:18 }}>→</span>
               <ChainTag chainId={last.destinationChainId||last.transactions?.[last.transactions.length-1]?.chainId} size="lg" />
               <span style={{ fontFamily:"'IBM Plex Mono', monospace", fontSize:16, fontWeight:700, color:C.text }}>
-                {isStable(last.buyToken) ? "$" : ""}{fmtAmt(last.settledBuyAmount||last.quotedBuyAmount, last.buyToken)} <span style={{ color:getChain(last.destinationChainId)?.color||C.textSub }}>{tokenSym(last.buyToken)}</span>
+                {isStable(last.buyToken) ? "$" : ""}{fmtAmt(last.settledBuyAmount||last.quotedBuyAmount, last.buyToken)} <TokenLink addr={last.buyToken} chainId={last.destinationChainId || last.transactions?.[last.transactions.length-1]?.chainId} />
               </span>
             </div>
           )}
