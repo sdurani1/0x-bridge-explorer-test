@@ -168,9 +168,9 @@ const tokenSym  = (addr) => addr?.toLowerCase() === NATIVE ? "ETH" : TOKENS[addr
 const tokenDec  = (addr) => addr?.toLowerCase() === NATIVE ? 18 : TOKENS[addr?.toLowerCase()]?.d || 18;
 const STABLES   = new Set(["USDC","USDT","DAI","BUSD","FRAX","LUSD","crvUSD","PYUSD"]);
 const isStable  = (addr) => STABLES.has(tokenSym(addr));
-const fmtAmt    = (raw, addr) => {
+const fmtAmt    = (raw, addr, decimalsOverride) => {
   if (!raw) return "—";
-  const n = Number(raw) / 10 ** tokenDec(addr);
+  const n = Number(raw) / 10 ** (decimalsOverride ?? tokenDec(addr));
   if (n === 0) return "0";
   if (n < 0.0001) return n.toExponential(3);
   if (n < 1)   return n.toFixed(4);
@@ -315,14 +315,18 @@ function StepCard({ step, idx, isLast, globalStatus, tokenCache = {} }) {
   const dstId    = step.destinationChainId || step.transactions?.[step.transactions.length-1]?.chainId;
   const srcChain = getChain(srcId);
   const dstChain = getChain(dstId);
-  const getCached = (addr) => {
-    const key = addr?.toLowerCase() + "_" + (step.transactions?.[0]?.chainId);
+  const getCached = (addr, chainId) => {
+    const key = addr?.toLowerCase() + "_" + chainId;
     return tokenCache[key] || TOKENS[addr?.toLowerCase()];
   };
-  const sellSym  = getCached(step.sellToken)?.s || tokenSym(step.sellToken);
-  const buySym   = getCached(step.buyToken)?.s || tokenSym(step.buyToken);
-  const sellAmt  = (isStable(step.sellToken) ? "$" : "") + fmtAmt(step.sellAmount, step.sellToken);
-  const buyAmt   = (isStable(step.buyToken) ? "$" : "") + fmtAmt(step.settledBuyAmount || step.quotedBuyAmount, step.buyToken);
+  const sellSym  = getCached(step.sellToken, srcId)?.s || tokenSym(step.sellToken);
+  const buySym   = getCached(step.buyToken, dstId || srcId)?.s || tokenSym(step.buyToken);
+  const sellDec  = getCached(step.sellToken, srcId)?.d;
+  const buyDec   = getCached(step.buyToken, dstId || srcId)?.d;
+  const sellStable = STABLES.has(sellSym);
+  const buyStable  = STABLES.has(buySym);
+  const sellAmt  = (sellStable ? "$" : "") + fmtAmt(step.sellAmount, step.sellToken, sellDec);
+  const buyAmt   = (buyStable  ? "$" : "") + fmtAmt(step.settledBuyAmount || step.quotedBuyAmount, step.buyToken, buyDec);
   const ts       = step.transactions?.[0]?.timestamp;
   const accentColor = isSwap ? C.blue : C.green;
 
