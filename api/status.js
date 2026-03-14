@@ -38,8 +38,6 @@ function extractQuoteId(input) {
   return "0x" + hex.slice(start, start + 32);
 }
 
-
-
 async function fetchTx(rpc, txHash) {
   try {
     const res = await fetch(rpc, {
@@ -71,6 +69,24 @@ async function fetchOriginTxData(chainId, txHash) {
   };
 }
 
+// ENS reverse lookup using Cloudflare's ENS gateway — no API key needed
+async function resolveENS(address) {
+  if (!address) return null;
+  try {
+    // Use the ENS subgraph via the public API
+    const res = await fetch("https://api.thegraph.com/subgraphs/name/ensdomains/ens", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `{ domains(where: { resolvedAddress: "${address.toLowerCase()}" }, first: 1) { name } }`
+      }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.data?.domains?.[0]?.name || null;
+  } catch { return null; }
+}
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
@@ -92,14 +108,17 @@ export default async function handler(req, res) {
   if (quoteId) params.append("quoteId", quoteId);
 
   try {
-    const upstream = await fetch(
-      `https://0x-cross-chain-status-one.vercel.app/api/status?${params}`
-    );
-    const data = await upstream.json();
+    const [upstreamRes, takerENS] = await Promise.all([
+      fetch(`https://0x-cross-chain-status-one.vercel.app/api/status?${params}`),
+      taker ? resolveENS(taker) : Promise.resolve(null),
+    ]);
+
+    const data = await upstreamRes.json();
     if (data && !data.error) {
       if (taker) data.taker = taker;
+      if (takerENS) data.takerENS = takerENS;
     }
-    return res.status(upstream.status).json(data);
+    return res.status(upstreamRes.status).json(data);
   } catch (err) {
     return res.status(500).json({ error: "Failed to reach status API" });
   }

@@ -443,15 +443,18 @@ function Result({ data, tokenCache = {} }) {
         <div style={{ display:"flex", flexDirection:"column", gap:8, alignItems:"flex-end" }}>
           {data.taker && (() => {
             const chain = getChain(data.transactions?.[0]?.chainId);
-            const url = chain ? chain.explorer.replace("/tx/","") + "/address/" + data.taker : null;
+            const url   = chain ? chain.explorer.replace("/tx/","") + "/address/" + data.taker : null;
+            const label = data.takerENS || (data.taker.slice(0,6) + "…" + data.taker.slice(-4));
+            const isENS = !!data.takerENS;
             return (
               <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:3 }}>
                 <div style={{ fontSize:9, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", letterSpacing:"0.1em" }}>SENDER</div>
                 <a href={url} target="_blank" rel="noopener noreferrer"
-                  style={{ fontSize:11, color:C.textSub, fontFamily:"'IBM Plex Mono', monospace", textDecoration:"none", display:"flex", alignItems:"center", gap:4 }}
+                  title={data.taker}
+                  style={{ fontSize:11, color: isENS ? C.gradStart : C.textSub, fontFamily:"'IBM Plex Mono', monospace", textDecoration:"none", display:"flex", alignItems:"center", gap:4, fontWeight: isENS ? 600 : 400 }}
                   onMouseEnter={e => e.currentTarget.style.color=C.gradStart}
-                  onMouseLeave={e => e.currentTarget.style.color=C.textSub}
-                >{data.taker.slice(0,6)}…{data.taker.slice(-4)} <span style={{ fontSize:"0.8em", opacity:0.6 }}>↗</span></a>
+                  onMouseLeave={e => e.currentTarget.style.color= isENS ? C.gradStart : C.textSub}
+                >{label} <span style={{ fontSize:"0.8em", opacity:0.6 }}>↗</span></a>
               </div>
             );
           })()}
