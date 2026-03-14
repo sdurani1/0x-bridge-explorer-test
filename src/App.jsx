@@ -178,7 +178,7 @@ const fmtAmt    = (raw, addr, decimalsOverride) => {
   return n.toExponential(3);
 };
 const fmtTime = (ts) => ts
-  ? new Date(ts * 1000).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })
+  ? new Date(ts * 1000).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "UTC", timeZoneName: "short" })
   : null;
 const trunc = (h, a=10, b=8) => h?.length > a+b+3 ? `${h.slice(0,a)}…${h.slice(-b)}` : h || "";
 const isSolanaHash = (h) => h && !h.startsWith("0x") && /^[1-9A-HJ-NP-Za-km-z]{80,}$/.test(h);
