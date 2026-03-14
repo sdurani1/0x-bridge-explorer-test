@@ -383,7 +383,7 @@ function StepCard({ step, idx, isLast, globalStatus, tokenCache = {} }) {
           <div style={{ padding:"10px 16px 14px", borderTop:`1px solid ${C.border}`, display:"flex", flexDirection:"column", gap:7 }}>
             {step.transactions.map((tx, i) => (
               <div key={i} style={{ display:"flex", alignItems:"center", gap:8 }}>
-                <span style={{ fontSize:9, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", minWidth:20, letterSpacing:"0.06em" }}>{i===0?"SRC":"DST"}</span>
+                <span style={{ fontSize:9, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", minWidth:60, letterSpacing:"0.06em" }}>{i===0?"SOURCE":"DESTINATION"}</span>
                 <HashLink hash={tx.txHash} chainId={tx.chainId} />
               </div>
             ))}
@@ -495,7 +495,7 @@ function Result({ data, tokenCache = {} }) {
           {data.transactions.map((tx,i) => (
             <div key={i} style={{ display:"flex", alignItems:"center", gap:10, padding:"12px 20px", borderBottom:i<data.transactions.length-1?`1px solid ${C.border}`:"none" }}>
               <div style={{ display:"flex", alignItems:"center", gap:8, flexShrink:0 }}>
-                <span style={{ fontSize:9, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", letterSpacing:"0.06em", minWidth:24 }}>{i===0?"SRC":"DST"}</span>
+                <span style={{ fontSize:9, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", letterSpacing:"0.06em", minWidth:60 }}>{i===0?"SOURCE":"DESTINATION"}</span>
                 <ChainTag chainId={tx.chainId} />
               </div>
               <HashLink hash={tx.txHash} chainId={tx.chainId} />
