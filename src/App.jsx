@@ -83,12 +83,86 @@ const getChain   = (id) => CHAINS[String(id)] || null;
 // ── Token helpers ──────────────────────────────────────────────────────────────
 const NATIVE = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 const TOKENS  = {
-  "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": { s: "USDC", d: 6 },
-  "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": { s: "USDC", d: 6 },
-  "0xaf88d065e77c8cc2239327c5edb3a432268e5831": { s: "USDC", d: 6 },
-  "0xdac17f958d2ee523a2206206994597c13d831ec7": { s: "USDT", d: 6 },
-  "0x4200000000000000000000000000000000000006": { s: "WETH", d: 18 },
-  "0x82af49447d8a07e3bd95bd0d56f35241523fbab1": { s: "WETH", d: 18 },
+  // USDC — multi-chain
+  "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48": { s: "USDC",   d: 6  }, // Ethereum
+  "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913": { s: "USDC",   d: 6  }, // Base
+  "0xaf88d065e77c8cc2239327c5edb3a432268e5831": { s: "USDC",   d: 6  }, // Arbitrum
+  "0x0b2c639c533813f4aa9d7837caf62653d097ff85": { s: "USDC",   d: 6  }, // Optimism
+  "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359": { s: "USDC",   d: 6  }, // Polygon
+  "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d": { s: "USDC",   d: 18 }, // BNB
+  "0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e": { s: "USDC",   d: 6  }, // Avalanche
+  "0x09bc4e0d864854c6afb6eb9a9cdf58ac190d0df9": { s: "USDC",   d: 6  }, // Mantle
+  "0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4": { s: "USDC",   d: 6  }, // Scroll
+  "0x176211869ca2b568f2a7d4ee941e073a821ee1ff": { s: "USDC",   d: 6  }, // Linea
+  "0xe96c591e7e9526cc0b0b5c5f6e3e83c44b31ff1e": { s: "USDC",   d: 6  }, // Blast
+  "0x754704bc059f8c67012fed69bc8a327a5aafb603": { s: "USDC",   d: 6  }, // Monad
+  // USDT — multi-chain
+  "0xdac17f958d2ee523a2206206994597c13d831ec7": { s: "USDT",   d: 6  }, // Ethereum
+  "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9": { s: "USDT",   d: 6  }, // Arbitrum
+  "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58": { s: "USDT",   d: 6  }, // Optimism
+  "0xc2132d05d31c914a87c6611c10748aeb04b58e8f": { s: "USDT",   d: 6  }, // Polygon
+  "0x55d398326f99059ff775485246999027b3197955": { s: "USDT",   d: 18 }, // BNB
+  "0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7": { s: "USDT",   d: 6  }, // Avalanche
+  "0x201eba5cc46d216ce6dc03f6a759e8e766e956ae": { s: "USDT",   d: 6  }, // Mantle
+  // WETH — multi-chain
+  "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2": { s: "WETH",   d: 18 }, // Ethereum
+  "0x4200000000000000000000000000000000000006": { s: "WETH",   d: 18 }, // Base / Optimism
+  "0x82af49447d8a07e3bd95bd0d56f35241523fbab1": { s: "WETH",   d: 18 }, // Arbitrum
+  "0x4300000000000000000000000000000000000004": { s: "WETH",   d: 18 }, // Blast
+  "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34e": { s: "WETH",   d: 18 }, // Linea
+  "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91": { s: "WETH",   d: 18 }, // zkSync
+  "0x2170ed0880ac9a755fd29b2688956bd959f933f8": { s: "WETH",   d: 18 }, // BNB (ETH)
+  // DAI
+  "0x6b175474e89094c44da98b954eedeac495271d0f": { s: "DAI",    d: 18 }, // Ethereum
+  "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1": { s: "DAI",    d: 18 }, // Arbitrum / Optimism
+  "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063": { s: "DAI",    d: 18 }, // Polygon
+  "0xd9ab5096a832b9ce79914329daee236f8eea0390": { s: "DAI",    d: 18 }, // Avalanche
+  // WBTC
+  "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599": { s: "WBTC",   d: 8  }, // Ethereum
+  "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f": { s: "WBTC",   d: 8  }, // Arbitrum
+  "0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6": { s: "WBTC",   d: 8  }, // Polygon
+  "0x68f180fcce6836688e9084f035309e29bf0a2095": { s: "WBTC",   d: 8  }, // Optimism
+  // cbBTC (Coinbase BTC)
+  "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf": { s: "cbBTC",  d: 8  }, // Ethereum
+  "0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf": { s: "cbBTC",  d: 8  }, // Base
+  // PYUSD
+  "0x6c3ea9036406852006290770bedfcaba0e23a0e8": { s: "PYUSD",  d: 6  }, // Ethereum
+  "0x4685ab3204e2fdd6d3f6c7faac2d8d48a1ebf9f5": { s: "PYUSD",  d: 6  }, // Solana (wrapped)
+  // stETH / wstETH
+  "0xae7ab96520de3a18e5e111b5eaab095312d7fe84": { s: "stETH",  d: 18 },
+  "0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0": { s: "wstETH", d: 18 }, // Ethereum
+  "0x5979d7b546e38e414f7e9822514be443a4800529": { s: "wstETH", d: 18 }, // Arbitrum
+  "0x1f32b1c2345538c0c6f582fcb022739c4a194ebb": { s: "wstETH", d: 18 }, // Optimism
+  // LINK
+  "0x514910771af9ca656af840dff83e8264ecf986ca": { s: "LINK",   d: 18 }, // Ethereum
+  "0xf97f4df75117a78c1a5a0dbb814af92458539fb4": { s: "LINK",   d: 18 }, // Arbitrum
+  // UNI
+  "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984": { s: "UNI",    d: 18 },
+  // MATIC / POL
+  "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0": { s: "POL",    d: 18 },
+  "0x0000000000000000000000000000000000001010": { s: "POL",    d: 18 },
+  // OP
+  "0x4200000000000000000000000000000000000042": { s: "OP",     d: 18 },
+  // ARB
+  "0x912ce59144191c1204e64559fe8253a0e49e6548": { s: "ARB",    d: 18 },
+  // AAVE
+  "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9": { s: "AAVE",   d: 18 },
+  // FRAX
+  "0x853d955acef822db058eb8505911ed77f175b99e": { s: "FRAX",   d: 18 },
+  // sUSD
+  "0x57ab1ec28d129707052df4df418d58a2d46d5f51": { s: "sUSD",   d: 18 },
+  // crvUSD
+  "0xf939e0a03fb07f59a73314e73794be0e57ac1b4e": { s: "crvUSD", d: 18 },
+  // cbETH
+  "0xbe9895146f7af43049ca1c1ae358b0541ea49704": { s: "cbETH",  d: 18 },
+  // rETH
+  "0xae78736cd615f374d3085123a210448e74fc6393": { s: "rETH",   d: 18 },
+  // ezETH
+  "0xbf5495efe5db9ce00f80364c8b423567e58d2110": { s: "ezETH",  d: 18 },
+  // weETH
+  "0xcd5fe23c85820f7b72d0926fc9b05b43e359b7ee": { s: "weETH",  d: 18 },
+  // USDS (Sky/MakerDAO)
+  "0xdc035d45d973e3ec169d2276ddab16f1e407384f": { s: "USDS",   d: 18 },
 };
 const tokenSym  = (addr) => addr?.toLowerCase() === NATIVE ? "ETH" : TOKENS[addr?.toLowerCase()]?.s || addr?.slice(0,6)+"…"+addr?.slice(-4) || "?";
 const tokenDec  = (addr) => addr?.toLowerCase() === NATIVE ? 18 : TOKENS[addr?.toLowerCase()]?.d || 18;
@@ -235,14 +309,18 @@ function HashLink({ hash, chainId }) {
 }
 
 // ── Journey step card ─────────────────────────────────────────────────────────
-function StepCard({ step, idx, isLast, globalStatus }) {
+function StepCard({ step, idx, isLast, globalStatus, tokenCache = {} }) {
   const isSwap   = step.type === "swap";
   const srcId    = step.transactions?.[0]?.chainId;
   const dstId    = step.destinationChainId || step.transactions?.[step.transactions.length-1]?.chainId;
   const srcChain = getChain(srcId);
   const dstChain = getChain(dstId);
-  const sellSym  = tokenSym(step.sellToken);
-  const buySym   = tokenSym(step.buyToken);
+  const getCached = (addr) => {
+    const key = addr?.toLowerCase() + "_" + (step.transactions?.[0]?.chainId);
+    return tokenCache[key] || TOKENS[addr?.toLowerCase()];
+  };
+  const sellSym  = getCached(step.sellToken)?.s || tokenSym(step.sellToken);
+  const buySym   = getCached(step.buyToken)?.s || tokenSym(step.buyToken);
   const sellAmt  = (isStable(step.sellToken) ? "$" : "") + fmtAmt(step.sellAmount, step.sellToken);
   const buyAmt   = (isStable(step.buyToken) ? "$" : "") + fmtAmt(step.settledBuyAmount || step.quotedBuyAmount, step.buyToken);
   const ts       = step.transactions?.[0]?.timestamp;
@@ -323,7 +401,7 @@ function StatusBadge({ status }) {
 }
 
 // ── Result ────────────────────────────────────────────────────────────────────
-function Result({ data }) {
+function Result({ data, tokenCache = {} }) {
   const steps  = data.steps || [];
   const failed = data.status==="failed"||data.status==="reverted";
   const first  = steps[0];
@@ -441,6 +519,28 @@ export default function BridgeExplorer() {
   const [result,   setResult]  = useState(null);
   const [error,    setError]   = useState(null);
   const [focused,  setFocused] = useState(false);
+  const [tokenCache, setTokenCache] = useState({});
+  const tokenFetching = useRef(new Set());
+
+  const fetchTokenInfo = (address, chainId) => {
+    if (!address || !chainId) return;
+    const key = `${address.toLowerCase()}_${chainId}`;
+    if (tokenCache[key] || tokenFetching.current.has(key)) return;
+    const NATIVE = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+    if (address.toLowerCase() === NATIVE) return;
+    // Only fetch if not already in our static TOKENS map
+    if (TOKENS[address.toLowerCase()]) return;
+    tokenFetching.current.add(key);
+    fetch(`/api/token-info?address=${address}&chainId=${chainId}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.symbol) {
+          setTokenCache(prev => ({ ...prev, [key]: { s: data.symbol, d: data.decimals ?? 18 } }));
+        }
+        tokenFetching.current.delete(key);
+      })
+      .catch(() => tokenFetching.current.delete(key));
+  };
   const msgInterval = useRef(null);
 
   // Sync system preference
@@ -494,6 +594,14 @@ export default function BridgeExplorer() {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       setResult(data);
+      // Pre-fetch symbols for unknown tokens in result
+      if (data?.steps?.length) {
+        data.steps.forEach(step => {
+          const cid = step.transactions?.[0]?.chainId;
+          if (step.sellToken) fetchTokenInfo(step.sellToken, cid);
+          if (step.buyToken) fetchTokenInfo(step.buyToken, step.destinationChainId || cid);
+        });
+      }
     } catch (e) {
       setError(e.message || "Something went wrong — please try again.");
     } finally {
@@ -667,7 +775,7 @@ export default function BridgeExplorer() {
         )}
 
         {/* Result */}
-        {result && <Result data={result} />}
+        {result && <Result data={result} tokenCache={tokenCache} />}
 
         {/* Empty state */}
         {!result && !error && !loading && (
