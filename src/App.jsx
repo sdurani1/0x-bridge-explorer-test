@@ -441,7 +441,44 @@ function Result({ data, tokenCache = {} }) {
           )}
         </div>
         <div style={{ display:"flex", flexDirection:"column", gap:8, alignItems:"flex-end" }}>
-{/* ZID hidden */}
+          {(data.taker || data.recipient) && (
+            <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:8 }}>
+              {data.taker && (() => {
+                const chain = getChain(data.transactions?.[0]?.chainId);
+                const url = chain ? chain.explorer.replace("/tx/","") + "/address/" + data.taker : null;
+                return (
+                  <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:3 }}>
+                    <div style={{ fontSize:9, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", letterSpacing:"0.1em" }}>SENDER</div>
+                    <a href={url} target="_blank" rel="noopener noreferrer"
+                      style={{ fontSize:11, color:C.textSub, fontFamily:"'IBM Plex Mono', monospace", textDecoration:"none", display:"flex", alignItems:"center", gap:4 }}
+                      onMouseEnter={e => e.currentTarget.style.color=C.gradStart}
+                      onMouseLeave={e => e.currentTarget.style.color=C.textSub}
+                    >{data.taker.slice(0,6)}…{data.taker.slice(-4)} <span style={{ fontSize:"0.8em", opacity:0.6 }}>↗</span></a>
+                  </div>
+                );
+              })()}
+              {data.recipient && (() => {
+                const dstChainId = data.transactions?.[data.transactions.length-1]?.chainId;
+                const chain = getChain(dstChainId);
+                const isSVM = data.recipient.length > 44; // Solana addresses are base58 ~44 chars
+                const url = (!isSVM && chain) ? chain.explorer.replace("/tx/","") + "/address/" + data.recipient : null;
+                const display = data.recipient.length > 12 ? data.recipient.slice(0,6) + "…" + data.recipient.slice(-4) : data.recipient;
+                return (
+                  <div style={{ display:"flex", flexDirection:"column", alignItems:"flex-end", gap:3 }}>
+                    <div style={{ fontSize:9, color:C.textDim, fontFamily:"'IBM Plex Mono', monospace", letterSpacing:"0.1em" }}>RECIPIENT</div>
+                    {url
+                      ? <a href={url} target="_blank" rel="noopener noreferrer"
+                          style={{ fontSize:11, color:C.textSub, fontFamily:"'IBM Plex Mono', monospace", textDecoration:"none", display:"flex", alignItems:"center", gap:4 }}
+                          onMouseEnter={e => e.currentTarget.style.color=C.gradStart}
+                          onMouseLeave={e => e.currentTarget.style.color=C.textSub}
+                        >{display} <span style={{ fontSize:"0.8em", opacity:0.6 }}>↗</span></a>
+                      : <span style={{ fontSize:11, color:C.textSub, fontFamily:"'IBM Plex Mono', monospace" }}>{display}</span>
+                    }
+                  </div>
+                );
+              })()}
+            </div>
+          )}
         </div>
       </div>
 
